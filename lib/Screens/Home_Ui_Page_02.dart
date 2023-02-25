@@ -1,4 +1,6 @@
+import 'package:bmi/Provider/data.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class page_02 extends StatelessWidget {
   page_02({Key? key}) : super(key: key);
@@ -37,32 +39,34 @@ class page_02 extends StatelessWidget {
                 color: const Color(0xFF232336),
                 borderRadius: BorderRadius.circular(15),
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Text(Intro,
-                    style: const TextStyle(
-                      color: Color(0xFF7ED779),
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
+              child: Consumer<DataProvider>(builder: (context,provider,child){
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text(Intro,
+                      style: const TextStyle(
+                        color: Color(0xFF7ED779),
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  Text(BMI_Value,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 90,
-                      fontWeight: FontWeight.bold,
+                    Text(provider.calculateBMI().toInt().toString(),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 90,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  Text(MSG,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 25,
-                      //fontWeight: FontWeight.bold,
+                    Text(MSG,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 25,
+                        //fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                ],
-              ),
+                  ],
+                );
+              },),
             ),
           ],
         ),

@@ -4,16 +4,8 @@ import 'package:provider/provider.dart';
 import 'Home_Ui_Page_02.dart';
 
 
-class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
-
-  @override
-  State<Home> createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
-
-  double sliderValue = 0.1;
+class Home extends StatelessWidget {
+   Home({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,65 +21,80 @@ class _HomeState extends State<Home> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Expanded(child: Container(
-                  height: 200,
-                  //width: 250,
-                  decoration: BoxDecoration(
-                      color: const Color(0xFF232336),
-                      borderRadius: BorderRadius.circular(20)
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(Icons.male,
-                        color: Colors.white,
-                        size: 90,
+            Consumer<DataProvider>(builder: (context,provider,child){
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: (){
+                        provider.setGender(true);
+                      },
+                      child: Container(
+                      height: 200,
+                      //width: 250,
+                      decoration: BoxDecoration(
+                          color: provider.Gender ?  Color(0xFF232336) : Color(0xFFFF1D1E33),
+                          borderRadius: BorderRadius.circular(20)
                       ),
-                      SizedBox(
-                        height: 5,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Icon(Icons.male,
+                            color: Colors.white,
+                            size: 90,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text("Male",
+                            style: TextStyle(
+                              fontSize: 30,
+                              color: Colors.white,
+                            ),
+                          )
+                        ],
                       ),
-                      Text("Male",
-                        style: TextStyle(
-                          fontSize: 30,
-                          color: Colors.white,
-                        ),
-                      )
-                    ],
                   ),
-                ),),
-                const SizedBox(width: 10,),
-                Expanded(child: Container(
-                  height: 200,
-                  //width: 250,
-                  decoration: BoxDecoration(
-                      color: const Color(0xFF232336),
-                      borderRadius: BorderRadius.circular(20)
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(Icons.female,
-                        color: Colors.white,
-                        size: 90,
+                    ),),
+                  const SizedBox(width: 10,),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: (){
+                        provider.setGender(false);
+                      },
+                      child: Container(
+                      height: 200,
+                      //width: 250,
+                      decoration: BoxDecoration(
+                          color: provider.Gender ?  Color(0xFF1D1E33) : Color(0xFF232336) ,
+                          borderRadius: BorderRadius.circular(20)
                       ),
-                      SizedBox(
-                        height: 5,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Icon(Icons.female,
+                            color: Colors.white,
+                            size: 90,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text("Female",
+                            style: TextStyle(
+                              fontSize: 30,
+                              color: Colors.white,
+                            ),
+                          )
+                        ],
                       ),
-                      Text("Female",
-                        style: TextStyle(
-                          fontSize: 30,
-                          color: Colors.white,
-                        ),
-                      )
-                    ],
                   ),
-                ),),
+                    ),),
 
-              ],
-            ),
+                ],
+              );
+            }),
+
             //SizedBox(height: 10,),
             Container(
               height: 200,
@@ -108,15 +115,18 @@ class _HomeState extends State<Home> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.end,
-                    children:  const [
-                      Text("159",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 50,
-                            fontWeight: FontWeight.bold
-                        ),
-                      ),
-                      Padding(
+                    children:  [
+                      Consumer<DataProvider>(builder: (context,provider,child){
+                        return Text(provider.Hight.toString(),
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 50,
+                              fontWeight: FontWeight.bold
+                          ),
+                        );
+                      }),
+
+                      const Padding(
                         padding: EdgeInsets.symmetric(vertical: 7),
                         child: Text("CM",
                           style: TextStyle(
@@ -128,15 +138,23 @@ class _HomeState extends State<Home> {
 
                     ],
                   ),
-                  Slider(
-                      activeColor: Color(0xFFca1b53),
-                      inactiveColor: Colors.white,
-                      value: sliderValue,
-                      onChanged: (double value){
-                        setState(() {
-                          sliderValue = value;
-                        });
-                      })
+                  Consumer<DataProvider>(builder: (context,provider,child){
+                    return Slider(
+                        activeColor: Color(0xFFca1b53),
+                        inactiveColor: Colors.white,
+                        value: provider.Hight.toDouble(),
+                        min: provider.kminSliderHight,
+                        max: provider.kmaxSliderHight,
+                        //value: 0.1,
+                        onChanged: (double value){
+                          provider.setHight(value.round());
+                          // setState(() {
+                          //   sliderValue = value;
+                          // });
+                        }
+                        );
+                  }),
+
                 ],
               ),
             ),
